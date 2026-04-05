@@ -22,6 +22,8 @@ const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.GUILD_ID;
 
+const pool = require('./db');
+
 const DATA_FILE = path.join(__dirname, 'botData.json');
 
 const INITIAL_SHELL = 30000;
@@ -343,6 +345,14 @@ client.once(Events.ClientReady, async () => {
   saveData();
 
   console.log(`${client.user.tag} でログインしました`);
+  console.log(`CLIENT_ID: ${CLIENT_ID || '未設定'} / GUILD_ID: ${GUILD_ID || '未設定'}`);
+
+  try {
+    const result = await pool.query('SELECT NOW() AS now');
+    console.log('DB接続成功:', result.rows[0].now);
+  } catch (error) {
+    console.error('DB接続失敗:', error);
+  }
 
   await rebuildRoomSchedules(client);
 
@@ -887,11 +897,10 @@ client.on(Events.InteractionCreate, async interaction => {
 
         return interaction.reply({
           content:
-            `✅ ${roomChannel} を作成しました。\n` +
+            `✅ ${interaction.user} が ${roomChannel} を作成しました。\n` +
             `料金: ${option.price.toLocaleString()}shell\n` +
             `削除予定: ${option.hours}時間後`,
           components: rows,
-          ephemeral: true,
         });
       }
 
