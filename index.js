@@ -18,7 +18,9 @@ const {
   Events,
 } = require('discord.js');
 
-const { TOKEN } = require('./config.json');
+const TOKEN = process.env.TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
+const GUILD_ID = process.env.GUILD_ID;
 
 const DATA_FILE = path.join(__dirname, 'botData.json');
 

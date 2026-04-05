@@ -6,7 +6,9 @@ const {
   ChannelType,
 } = require('discord.js');
 
-const { TOKEN, CLIENT_ID, GUILD_ID } = require('./config.json');
+const TOKEN = process.env.TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
+const GUILD_ID = process.env.GUILD_ID;
 
 const ADMIN = PermissionFlagsBits.Administrator;
 
